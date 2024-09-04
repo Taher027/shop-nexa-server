@@ -32,6 +32,7 @@ const userSchema = new Schema<IUser>(
       type: String,
       values: ['admin', 'user'],
       default: 'user',
+      immutable: true,
       messsage: '{VALUE} is not a expected role!',
     },
     gender: {
@@ -45,7 +46,7 @@ const userSchema = new Schema<IUser>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const User = model<IUser>('User', userSchema);

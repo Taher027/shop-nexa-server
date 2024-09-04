@@ -7,12 +7,12 @@ const router = express.Router();
 router.post(
   '/create-user',
   validateRequest(userValidations.userValidationSchema),
-  userController.createUser
+  userController.createUser,
 );
 router.patch(
   '/:id',
   validateRequest(userValidations.updateUserShcema),
-  userController.updateUser
+  userController.updateUser,
 );
 
 export const userRotes = router;

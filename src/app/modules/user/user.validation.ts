@@ -33,7 +33,7 @@ const updateUserShcema = z.object({
       role: z.string().optional(),
       phone: z.string().optional(),
       address: z.string().optional(),
-      gender: z.string().optional(),
+      gender: z.enum(['male', 'female', 'others']).optional(),
       profileImage: z.string().optional(),
     })
     .refine((data) => !data.email && !data.role, {

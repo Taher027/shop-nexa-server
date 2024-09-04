@@ -1,13 +1,13 @@
 import IUser from './user.interface';
 import User from './user.model';
 
-const createUserToDb = async (data: IUser) => {
-  const newUser = User.create(data);
+const createUserToDb = async (payload: IUser) => {
+  const newUser = User.create(payload);
   return newUser;
 };
 
-const updateUserIntoDb = async (id: string, data: Partial<IUser>) => {
-  const { name, ...remainingData } = data;
+const updateUserIntoDb = async (id: string, payload: Partial<IUser>) => {
+  const { name, ...remainingData } = payload;
   const modifiedUpdateData: Record<string, unknown> = {
     ...remainingData,
   };
@@ -17,11 +17,11 @@ const updateUserIntoDb = async (id: string, data: Partial<IUser>) => {
       modifiedUpdateData[`name.${key}`] = value;
     }
   }
-  const result = await User.findOneAndUpdate({ _id: id }, modifiedUpdateData, {
+  const updatedUser = await User.findByIdAndUpdate(id, modifiedUpdateData, {
     new: true,
     runValidators: true,
   });
-  return result;
+  return updatedUser;
 };
 
 export const userServices = {

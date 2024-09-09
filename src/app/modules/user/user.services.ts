@@ -1,9 +1,32 @@
-import IUser from './user.interface';
+import config from '../../config';
+import { createToken } from './auth.utils';
+import { IUser } from './user.interface';
 import User from './user.model';
 
 const createUserToDb = async (payload: IUser) => {
-  const newUser = User.create(payload);
-  return newUser;
+  const newUser = await User.create(payload);
+
+  // create token for new user
+  const jwtPayload = {
+    email: newUser?.email,
+    role: newUser?.role,
+  };
+  const token = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  );
+  const refreshToken = createToken(
+    jwtPayload,
+    config.jwt_refresh_secret as string,
+    config.jwt_refresh_expires_in as string,
+  );
+  const newUserData = {
+    user: newUser,
+    token,
+    refreshToken,
+  };
+  return newUserData;
 };
 
 const updateUserIntoDb = async (id: string, payload: Partial<IUser>) => {

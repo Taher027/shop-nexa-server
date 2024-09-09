@@ -3,6 +3,7 @@ import { Schema } from 'mongoose';
 interface IORder {
   products: {
     productId: Schema.Types.ObjectId;
+    price: number;
     quantity: number;
   }[];
   user: {
@@ -13,7 +14,9 @@ interface IORder {
   };
   shippingAddress: string;
   orderDate: Date;
-  totalAmmount: number;
+  totalAmount: number;
   shippingCost: number;
+  subTotal: number;
+  isDeleted?: boolean;
 }
 export default IORder;

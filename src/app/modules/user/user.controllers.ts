@@ -2,15 +2,24 @@ import httpStatus from 'http-status';
 import catchAsync from '../../uitls/catchAsync';
 import sendResponse from '../../uitls/sendResponse';
 import { userServices } from './user.services';
+import config from '../../config';
 
 const createUser = catchAsync(async (req, res) => {
   const data = req.body;
   const result = await userServices.createUserToDb(data);
+
+  const { refreshToken, ...remaining } = result;
+
+  res.cookie('refreshToken', refreshToken, {
+    secure: config.NODE_ENV === 'production',
+    httpOnly: true,
+  });
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'user create succesfull',
-    data: result,
+    data: remaining,
   });
 });
 
